@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">📋 我的 To-Do List</h1>
+
+        <!-- 新增待辦事項 -->
+        <div class="input-group mb-3">
+            <input type="text" id="newTodoTitle" class="form-control" placeholder="請輸入待辦事項">
+            <button class="btn btn-primary" onclick="addTodo()">新增</button>
+        </div>
+
+        <!-- Todo 清單 -->
+        <ul id="todoList" class="list-group">
+            <!-- 這裡會透過 JS 動態插入待辦事項 -->
+        </ul>
+    </div>
+
+    <script>
+        const API_URL = "/api/todos";
+
+        // 取得所有 Todo
+        async function fetchTodos() {
+            const response = await fetch(API_URL);
+            const todos = await response.json();
+            const todoList = document.getElementById("todoList");
+            todoList.innerHTML = ""; // 清空列表
+
+            todos.forEach(todo => {
+                const li = document.createElement("li");
+                li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
+
+                li.innerHTML = `
+                    <span ${todo.completed ? 'style="text-decoration: line-through;"' : ''}>${todo.title}</span>
+                    <div>
+                        <button class="btn btn-success btn-sm me-2" onclick="toggleComplete(${todo.id}, ${todo.completed})">${todo.completed ? "❌ 未完成" : "✅ 完成"}</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteTodo(${todo.id})">🗑️ 刪除</button>
+                    </div>
+                `;
+                todoList.appendChild(li);
+            });
+        }
+
+        // 新增 Todo
+        async function addTodo() {
+            const title = document.getElementById("newTodoTitle").value;
+            if (!title) return alert("請輸入待辦事項！");
+
+            await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title })
+            });
+
+            document.getElementById("newTodoTitle").value = ""; // 清空輸入框
+            fetchTodos();
+        }
+
+        // 刪除 Todo
+        async function deleteTodo(id) {
+            await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+            fetchTodos();
+        }
+
+        // 切換完成狀態
+        async function toggleComplete(id, completed) {
+            // 先取得目前的 todo 詳細資料
+            const res = await fetch(`/api/todos/${id}`);
+            const todo = await res.json();
+
+            // 傳送更新請求（要包含 title + description + completed）
+            await fetch(`${API_URL}/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title: todo.title,
+                    description: todo.description || "",
+                    completed: !completed
+                })
+            });
+            fetchTodos();
+        }
+
+        // 初始載入
+        fetchTodos();
+    </script>
+</body>
+</html>
