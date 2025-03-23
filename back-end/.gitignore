@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### 避免密碼洩露 ###
+src/main/resources/application-local.properties
