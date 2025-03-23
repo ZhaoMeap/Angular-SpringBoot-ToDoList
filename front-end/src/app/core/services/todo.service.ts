@@ -7,23 +7,23 @@ import { Todo } from '../models/todo.model';
   providedIn: 'root'
 })
 export class TodoService {
-  private apiUrl = 'http://localhost:8080/api/todos';
+  private apiUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 
   getTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.apiUrl);
+    return this.http.get<Todo[]>(`${this.apiUrl}/getAllTodos`);
   }
 
   createTodo(todo: Todo): Observable<Todo> {
-    return this.http.post<Todo>(this.apiUrl, todo);
+    return this.http.post<Todo>(`${this.apiUrl}/createTodo`, todo);
   }
 
   updateTodo(id: number, todo: Todo): Observable<Todo> {
-    return this.http.put<Todo>(`${this.apiUrl}/${id}`, todo);
+    return this.http.put<Todo>(`${this.apiUrl}/updateTodo/${id}`, todo);
   }
 
   deleteTodo(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/deleteTodo/${id}`);
   }
 }
