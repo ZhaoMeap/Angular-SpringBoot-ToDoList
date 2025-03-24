@@ -69,7 +69,7 @@ ng serve --open
 cd back-end
 mvn spring-boot:run
 ```
-API 會在：http://localhost:8080/api/todos
+API 會在：http://localhost:8080/api/
 
 ---
 
@@ -77,10 +77,10 @@ API 會在：http://localhost:8080/api/todos
 
 | 方法 | 路徑 | 說明 |
 |------|------|------|
-| GET | `/api/todos` | 取得所有 todo |
-| POST | `/api/todos` | 新增 todo |
-| PUT | `/api/todos/{id}` | 修改 todo |
-| DELETE | `/api/todos/{id}` | 刪除 todo |
+| GET | `/api/getAllTodos` | 取得所有 todo |
+| POST | `/api/createTodo` | 新增 todo |
+| PUT | `/api/updateTodo/{id}` | 修改 todo |
+| DELETE | `/api/deleteTodo/{id}` | 刪除 todo |
 
 ---
 
