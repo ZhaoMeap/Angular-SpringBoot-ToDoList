@@ -69,7 +69,7 @@ ng serve --open
 cd back-end
 mvn spring-boot:run
 ```
-API 會在：http://localhost:8080/api/
+API 會在：http://localhost:8080/swagger-ui/index.html
 
 ---
 
@@ -87,7 +87,9 @@ API 會在：http://localhost:8080/api/
 ### 📌 備註與延伸功能
 
 - ✅ 支援 CORS，前後端可跨域連接
+- ✅ 支援 Swagger Open API 文件
 - ✅ 自動建表功能，啟動時自動產生 `todos` 表格
+- ✅ 表單驗證，建立 Todo 時驗證欄位是否輸入資料
 - 📌 待加入：過濾條件、日期分類、登入驗證、Firebase deploy...
 
 ---

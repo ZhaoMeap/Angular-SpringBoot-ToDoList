@@ -1,21 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../../../core/models/todo.model';
 import { TodoService } from '../../../core/services/todo.service';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-todo-list',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.scss'
 })
 export class TodoListComponent implements OnInit {
   todos: Todo[] = [];
-  newTitle: string = '';
+  todoForm!: FormGroup;
 
-  constructor(private todoService: TodoService) {}
+  constructor(private todoService: TodoService, private fb: FormBuilder) {
+    this.todoForm = this.fb.group({
+      title: ['', Validators.required],
+      description: [''],
+      completed: [false]
+    });
+  }
 
   ngOnInit(): void {
     this.loadTodos();
@@ -28,10 +34,16 @@ export class TodoListComponent implements OnInit {
   }
 
   addTodo(): void {
-    if(!this.newTitle.trim()) return;
-    const newTodo: Todo = { title: this.newTitle, completed: false};
+    if(this.todoForm.invalid) return;
+
+    const newTodo: Todo = this.todoForm.value;
+
     this.todoService.createTodo(newTodo).subscribe(() => {
-      this.newTitle = '';
+      this.todoForm.reset({
+        title: '',
+        description: '',
+        completed: false
+      });
       this.loadTodos();
     });
   }

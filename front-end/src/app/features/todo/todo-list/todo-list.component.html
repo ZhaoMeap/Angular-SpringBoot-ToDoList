@@ -1,17 +1,17 @@
 <div class="todo-container">
-    <h2>📝 Todo List</h2>
-    <div class="add-form">
-      <input type="text" [(ngModel)]="newTitle" placeholder="輸入待辦事項" />
-      <button (click)="addTodo()">新增</button>
-    </div>
-  
-    <ul class="todo-list">
-      <li *ngFor="let todo of todos" [class.completed]="todo.completed">
-        <span (click)="toggleTodo(todo)">
-          ✅ {{ todo.title }}
-        </span>
-        <button (click)="deleteTodo(todo.id!)">🗑 刪除</button>
-      </li>
-    </ul>
-  </div>
-  
+  <h2>📝 Todo List</h2>
+
+  <form class="add-form" [formGroup]="todoForm" (ngSubmit)="addTodo()">
+    <input type="text" placeholder="請輸入待辦事項" formControlName="title" />
+    <button type="submit" [disabled]="todoForm.invalid">＋ 新增</button>
+  </form>
+
+  <ul class="todo-list">
+    <li *ngFor="let todo of todos" [class.completed]="todo.completed">
+      <span class="todo-title" (click)="toggleTodo(todo)">
+        {{ todo.completed ? '✅' : '⬜' }} {{ todo.title }}
+      </span>
+      <button class="delete-btn" (click)="deleteTodo(todo.id!)">🗑</button>
+    </li>
+  </ul>
+</div>
