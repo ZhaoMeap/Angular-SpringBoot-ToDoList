@@ -3,11 +3,13 @@ package com.example.myproject.controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
+import com.example.myproject.service.TodoBffService;
 import com.example.myproject.service.TodoService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import com.example.myproject.dto.TodoDTO;
 import com.example.myproject.entity.Todo;
 
 import java.util.List;
@@ -15,11 +17,14 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
-@Tag(name = "Todo Management", description = "提供 Todo CRUD 操作")
+@Tag(name = "BFF Todo Management", description = "針對前端需求優化的 Todo CRUD API")
 public class TodoController {
+
+    private final TodoBffService todoBffService;
     private final TodoService todoService;
 
-    public TodoController(TodoService todoService) {
+    public TodoController(TodoService todoService, TodoBffService todoBffService) {
+        this.todoBffService = todoBffService;
         this.todoService = todoService;
     }
 
@@ -56,4 +61,15 @@ public class TodoController {
         return ResponseEntity.noContent().build();
     }
     
+    @GetMapping("/getIncompleteTodos")
+    @Operation(summary = "取得所有未完成的 Todo", description = "取得目前資料庫中所有未完成的 Todo 項目")
+    public List<TodoDTO> getIncompleteTodos() {
+        return todoBffService.getIncompleteTodos();
+    }
+
+    @GetMapping("/getCompletedTodos")
+    @Operation(summary = "取得所有已完成的 Todo", description = "取得目前資料庫中所有已完成的 Todo 項目")
+    public List<TodoDTO> getCompletedTodos() {
+        return todoBffService.getCompletedTodos();
+    }
 }
