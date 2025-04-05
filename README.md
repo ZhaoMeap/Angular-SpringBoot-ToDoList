@@ -25,7 +25,10 @@ Angular-SpringBoot-ToDoList/
 │   │   ├── controller/TodoController.java
 │   │   ├── entity/Todo.java
 │   │   ├── repository/TodoRepository.java
-│   │   └── service/TodoService.java
+│   │   ├── service
+│   │   │   ├── TodoService.java
+│   │   │   └── TodoBffService.java
+│   │   └── dto/TodoDTO.java
 │   └── resources/
 │       └── application.properties
 │
@@ -46,7 +49,7 @@ Angular-SpringBoot-ToDoList/
 | 技術 | 版本 |
 |------|------|
 | Angular | 17+ (使用 Standalone Components) |
-| Spring Boot | 3.4.x |
+| Spring Boot | 3.4.4 |
 | Java | 17 |
 | PostgreSQL | 15+ |
 | Node.js | 18+ |
@@ -78,6 +81,9 @@ API 會在：http://localhost:8080/swagger-ui/index.html
 | 方法 | 路徑 | 說明 |
 |------|------|------|
 | GET | `/api/getAllTodos` | 取得所有 todo |
+| GET | `/api/getTodoById` | 取得指定 ID 的 todo |
+| GET | `/api/getIncompleteTodo` | 取得所有未完成的 todo |
+| GET | `/api/getCompleteTodos` | 取得所有完成的 todo |
 | POST | `/api/createTodo` | 新增 todo |
 | PUT | `/api/updateTodo/{id}` | 修改 todo |
 | DELETE | `/api/deleteTodo/{id}` | 刪除 todo |
@@ -90,6 +96,8 @@ API 會在：http://localhost:8080/swagger-ui/index.html
 - ✅ 支援 Swagger Open API 文件
 - ✅ 自動建表功能，啟動時自動產生 `todos` 表格
 - ✅ 表單驗證，建立 Todo 時驗證欄位是否輸入資料
+- ✅ 新增 BFF 架構（引入 `TodoBffService` 與 DTO）
+- ✅ 分離資料層與視圖層回傳資料
 - 📌 待加入：過濾條件、日期分類、登入驗證、Firebase deploy...
 
 ---
