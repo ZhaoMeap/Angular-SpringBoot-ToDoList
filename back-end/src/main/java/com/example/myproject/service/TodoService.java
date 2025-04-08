@@ -28,13 +28,13 @@ public class TodoService {
     }
 
     public Todo updateTodo(Long id, Todo todo) {
-        Todo existingTodo = todoRepository.findById(id).orElse(null);
+        final Todo existingTodo = todoRepository.findById(id).orElse(null);
         if (existingTodo == null) {
             return null;
         }
         existingTodo.setTitle(todo.getTitle());
         existingTodo.setDescription(todo.getDescription());
-        existingTodo.setCompleted(todo.getCompleted());
+        existingTodo.setCompleted(todo.isCompleted());
         return todoRepository.save(existingTodo);
     }
 

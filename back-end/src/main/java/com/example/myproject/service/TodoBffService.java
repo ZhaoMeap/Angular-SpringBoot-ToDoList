@@ -18,15 +18,15 @@ public class TodoBffService {
 
     public List<TodoDTO> getIncompleteTodos() {
         return todoService.getAllTodos().stream()
-                .filter(todo -> !todo.getCompleted())
-                .map(todo -> new TodoDTO(todo.getTitle(), todo.getCompleted()))
+                .filter(todo -> !todo.isCompleted())
+                .map(todo -> new TodoDTO(todo.getTitle(), todo.isCompleted()))
                 .collect(Collectors.toList());
     }
 
     public List<TodoDTO> getCompletedTodos() {
         return todoService.getAllTodos().stream()
-                .filter(Todo::getCompleted)
-                .map(todo -> new TodoDTO(todo.getTitle(), todo.getCompleted()))
+                .filter(Todo::isCompleted)
+                .map(todo -> new TodoDTO(todo.getTitle(), todo.isCompleted()))
                 .collect(Collectors.toList());
     }
 }
